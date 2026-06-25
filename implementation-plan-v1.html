@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Implementation Plan — Reparations Archive</title>
+<style>
+:root {
+  --color-bg-primary: #111118;
+  --color-bg-secondary: #1a1a20;
+  --color-bg-elevated: #22222a;
+  --color-gold: #c9a84c;
+  --color-gold-light: #d4b96a;
+  --color-gold-dark: #a88a3c;
+  --color-gold-muted: rgba(201,168,76,0.15);
+  --color-text-primary: #f0f0f2;
+  --color-text-secondary: #a0a0a8;
+  --color-text-muted: #6a6a72;
+  --color-text-gold: #c9a84c;
+  --color-border-subtle: rgba(255,255,255,0.05);
+  --color-border-default: rgba(255,255,255,0.08);
+  --color-border-elevated: rgba(255,255,255,0.12);
+  --color-border-gold: rgba(201,168,76,0.3);
+  --font-display: 'Georgia', 'Times New Roman', serif;
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'SF Mono', 'Berkeley Mono', ui-monospace, monospace;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px;
+  --space-4: 16px; --space-5: 24px; --space-6: 32px;
+  --space-7: 48px; --space-8: 64px; --space-9: 96px;
+  --bento-gap: 16px;
+  --bento-radius: 16px;
+  --bento-padding: 24px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(17,17,24,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-border-subtle);
+  padding: var(--space-4) var(--space-6);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand { font-family: var(--font-display); font-size: 1.2rem; color: var(--color-gold); letter-spacing: 0.02em; text-decoration: none; }
+.nav-links { display: flex; gap: var(--space-5); }
+.nav-links a { color: var(--color-text-secondary); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+.nav-links a:hover { color: var(--color-gold); }
+@media (max-width: 768px) { .nav-links { display: none; } }
+
+.hero {
+  min-height: 70vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: var(--space-9) var(--space-6);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,168,76,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-content { position: relative; z-index: 1; text-align: center; max-width: 800px; }
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 400; line-height: 0.95; letter-spacing: -0.02em; margin-bottom: var(--space-5);
+}
+.hero h1 .gold { color: var(--color-gold); }
+.hero-sub { font-size: 1rem; color: var(--color-text-secondary); max-width: 600px; margin: 0 auto; }
+
+.section { padding: var(--space-9) var(--space-6); max-width: 1200px; margin: 0 auto; }
+.section-header { text-align: center; margin-bottom: var(--space-8); }
+.section-header h2 { font-family: var(--font-display); font-size: clamp(1.5rem, 3.5vw, 2.4rem); font-weight: 400; margin-bottom: var(--space-3); }
+.section-header p { color: var(--color-text-secondary); max-width: 600px; margin: 0 auto; }
+
+/* Architecture Table */
+.arch-table { width: 100%; border-collapse: collapse; margin: var(--space-5) 0; }
+.arch-table th, .arch-table td {
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  border-bottom: 1px solid var(--color-border-subtle);
+  font-size: 0.85rem;
+}
+.arch-table th {
+  color: var(--color-gold);
+  font-weight: 600;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.arch-table td { color: var(--color-text-secondary); }
+.arch-table tr:hover td { background: var(--color-bg-secondary); }
+
+/* Phase Cards */
+.phase-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--bento-gap); }
+.phase-card {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--bento-radius);
+  padding: var(--bento-padding);
+  position: relative;
+}
+.phase-num {
+  position: absolute; top: var(--space-4); right: var(--space-4);
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  color: var(--color-gold-muted);
+  line-height: 1;
+}
+.phase-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--color-gold);
+  margin-bottom: var(--space-2);
+  padding-right: var(--space-6);
+}
+.phase-duration {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-3);
+}
+.phase-list { list-style: none; }
+.phase-list li {
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--color-border-subtle);
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  display: flex; align-items: flex-start; gap: var(--space-2);
+}
+.phase-list li::before { content: '→'; color: var(--color-gold); flex-shrink: 0; }
+.phase-list li:last-child { border-bottom: none; }
+.phase-tag {
+  display: inline-block;
+  background: var(--color-gold-muted);
+  color: var(--color-gold);
+  font-size: 0.65rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-top: var(--space-3);
+}
+
+/* Decision Table */
+.decision-table { width: 100%; border-collapse: collapse; margin: var(--space-5) 0; }
+.decision-table th, .decision-table td {
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  border-bottom: 1px solid var(--color-border-subtle);
+  font-size: 0.85rem;
+}
+.decision-table th {
+  color: var(--color-gold);
+  font-weight: 600;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.decision-table td { color: var(--color-text-secondary); }
+.decision-table tr:hover td { background: var(--color-bg-secondary); }
+.decision-emoji { font-size: 1.1rem; }
+
+/* Anti-pattern */
+.anti-pattern {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--bento-radius);
+  padding: var(--bento-padding);
+  margin: var(--space-4) 0;
+}
+.anti-pattern h3 {
+  font-family: var(--font-display);
+  color: #f44336;
+  font-size: 1.1rem;
+  margin-bottom: var(--space-3);
+}
+.anti-pattern ul { list-style: none; }
+.anti-pattern li {
+  padding: var(--space-2) 0;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.anti-pattern li::before { content: '✗ '; color: #f44336; }
+.anti-pattern li:last-child { border-bottom: none; }
+
+/* Accountability */
+.account-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--bento-gap); }
+.account-card {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--bento-radius);
+  padding: var(--bento-padding);
+  text-align: center;
+}
+.account-card h4 {
+  font-family: var(--font-display);
+  color: var(--color-gold);
+  font-size: 1rem;
+  margin-bottom: var(--space-2);
+}
+.account-card p { font-size: 0.8rem; color: var(--color-text-secondary); }
+
+/* Budget */
+.budget-table { width: 100%; max-width: 500px; margin: var(--space-5) auto; border-collapse: collapse; }
+.budget-table td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border-subtle);
+  font-size: 0.9rem;
+}
+.budget-table td:first-child { color: var(--color-text-secondary); }
+.budget-table td:last-child { text-align: right; color: var(--color-gold); font-family: var(--font-mono); }
+.budget-table tr:last-child td { border-bottom: none; font-weight: 700; }
+
+/* Checklist */
+.checklist { list-style: none; max-width: 600px; margin: var(--space-5) auto; }
+.checklist li {
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border-subtle);
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  display: flex; align-items: flex-start; gap: var(--space-3);
+}
+.checklist li::before { content: '☐'; color: var(--color-gold); font-size: 1.1rem; line-height: 1; flex-shrink: 0; }
+.checklist li:last-child { border-bottom: none; }
+
+/* Callout */
+.callout {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-gold);
+  border-radius: var(--bento-radius);
+  padding: var(--bento-padding);
+  margin: var(--space-7) auto;
+  max-width: 700px;
+  text-align: center;
+}
+.callout h3 {
+  font-family: var(--font-display);
+  color: var(--color-gold);
+  font-weight: 400;
+  font-size: 1.3rem;
+  margin-bottom: var(--space-3);
+}
+.callout p { color: var(--color-text-secondary); font-size: 0.9rem; }
+
+/* Footer */
+.footer {
+  background: var(--color-bg-secondary);
+  border-top: 1px solid var(--color-border-subtle);
+  padding: var(--space-7) var(--space-6);
+  text-align: center;
+  margin-top: var(--space-9);
+}
+.footer p { color: var(--color-text-muted); font-size: 0.8rem; margin-bottom: var(--space-2); }
+.footer .ein { font-family: var(--font-mono); color: var(--color-gold); }
+
+/* Utility */
+.divider { height: 1px; background: linear-gradient(90deg, transparent, var(--color-border-default), transparent); max-width: 1200px; margin: 0 auto; }
+.gold { color: var(--color-gold); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="#" class="nav-brand">⬡ IMPLEMENTATION PLAN</a>
+  <div class="nav-links">
+    <a href="#architecture">Architecture</a>
+    <a href="#phases">Phases</a>
+    <a href="#decisions">Decisions</a>
+    <a href="#accountability">Accountability</a>
+    <a href="#budget">Budget</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <h1>Reparations Archive<br><span class="gold">Implementation Plan</span></h1>
+    <p class="hero-sub">A suggestion for the executor team. Subject to independent recon. Static site. Zero maintenance cost. Deploy in 2 weeks.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ARCHITECTURE
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section" id="architecture">
+  <div class="section-header">
+    <h2>Recommended <span class="gold">Architecture</span></h2>
+    <p>Static site. No database. No server. Just files.</p>
+  </div>
+
+  <table class="arch-table">
+    <thead>
+      <tr><th>Layer</th><th>Technology</th><th>Why</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Frontend</td><td>Hugo or Astro</td><td>Static, fast, free hosting, no build step</td></tr>
+      <tr><td>Data</td><td>YAML/JSON files</td><td>Version-controlled, GitHub-backed, human-readable</td></tr>
+      <tr><td>Hosting</td><td>GitHub Pages or Cloudflare Pages</td><td>Free, global CDN, auto SSL</td></tr>
+      <tr><td>Search</td><td>Pagefind</td><td>Client-side, no server needed, instant</td></tr>
+      <tr><td>Analytics</td><td>Plausible or GoatCounter</td><td>Privacy-first, no cookies, GDPR-compliant</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <h3>Why NOT WordPress / React / Custom?</h3>
+    <p>WordPress: security burden, ongoing maintenance. React/Next.js: premature — build static first, enhance later. The Chairman's standard: <strong>sovereign, zero-cost, version-controlled</strong>.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SITE STRUCTURE
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-header">
+    <h2>Site <span class="gold">Structure</span></h2>
+  </div>
+
+  <table class="arch-table">
+    <thead>
+      <tr><th>Path</th><th>Content</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>/</code></td><td>Homepage with stats (47 docs, 6 categories, 160+ years)</td></tr>
+      <tr><td><code>/studies/</code></td><td>Filterable grid of all documents</td></tr>
+      <tr><td><code>/by-date/</code></td><td>Timeline view (1865 → 2026)</td></tr>
+      <tr><td><code>/by-location/</code></td><td>Map + list (country → state → city)</td></tr>
+      <tr><td><code>/by-type/</code></td><td>Government, Academic, Advocacy, International, Media, Legislation</td></tr>
+      <tr><td><code>/callie-house/</code></td><td>Dedicated section for Field Order 15 + derivatives</td></tr>
+      <tr><td><code>/missing/</code></td><td>"Help us find these" — known gaps</td></tr>
+      <tr><td><code>/about/</code></td><td>Methodology, sources, contribution guidelines</td></tr>
+      <tr><td><code>/api/</code></td><td>JSON dump of entire catalogue (for researchers)</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PHASES
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section" id="phases">
+  <div class="section-header">
+    <h2>Phased <span class="gold">Execution</span></h2>
+    <p>4 sprints. Each produces a verifiable artifact.</p>
+  </div>
+
+  <div class="phase-grid">
+    <div class="phase-card">
+      <div class="phase-num">01</div>
+      <h3>Foundation</h3>
+      <div class="phase-duration">Sprint 1 — 3 days</div>
+      <ul class="phase-list">
+        <li>Set up Hugo/Astro project on GitHub</li>
+        <li>Create data schema (YAML/JSON)</li>
+        <li>Import 47 verified documents</li>
+        <li>Build listing page with search</li>
+        <li>Deploy to GitHub Pages</li>
+      </ul>
+      <span class="phase-tag">Gate: Site live, all docs accessible</span>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-num">02</div>
+      <h3>Organization</h3>
+      <div class="phase-duration">Sprint 2 — 3 days</div>
+      <ul class="phase-list">
+        <li>Date/timeline view</li>
+        <li>Location/map view</li>
+        <li>Type-based filtering</li>
+        <li>Download counters</li>
+        <li>Mobile responsiveness pass</li>
+      </ul>
+      <span class="phase-tag">Gate: All 3 navigation paths work</span>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-num">03</div>
+      <h3>Gap Filling</h3>
+      <div class="phase-duration">Sprint 3 — 5 days</div>
+      <ul class="phase-list">
+        <li>Recon 25 unknown unknowns</li>
+        <li>Contact city/county offices</li>
+        <li>FOIA requests for unreleased reports</li>
+        <li>Reach out to academic authors</li>
+        <li>Browser-based verification for JS-rendered pages</li>
+      </ul>
+      <span class="phase-tag">Gate: 60+ documents catalogued</span>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-num">04</div>
+      <h3>Enhancement</h3>
+      <div class="phase-duration">Sprint 4 — 3 days</div>
+      <ul class="phase-list">
+        <li>Document preview thumbnails</li>
+        <li>Full-text PDF search (if feasible)</li>
+        <li>"Contribute a document" form</li>
+        <li>API endpoint for researchers</li>
+        <li>Performance audit (Lighthouse > 90)</li>
+      </ul>
+      <span class="phase-tag">Gate: Feature-complete</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CRITICAL DECISIONS
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section" id="decisions">
+  <div class="section-header">
+    <h2>Critical <span class="gold">Design Decisions</span></h2>
+  </div>
+
+  <table class="decision-table">
+    <thead>
+      <tr><th>Decision</th><th>Recommendation</th><th>Rationale</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Domain</td><td>reparations-archive.org</td><td>Neutral, descriptive, memorable</td></tr>
+      <tr><td>Color</td><td>Dark theme, high contrast</td><td>Professional, accessible, print-friendly</td></tr>
+      <tr><td>PDF Handling</td><td>Direct download + Google Docs viewer fallback</td><td>Some users can't open PDFs in-browser</td></tr>
+      <tr><td>Mobile</td><td>Mobile-first design</td><td>60%+ of users will be on mobile</td></tr>
+      <tr><td>Accessibility</td><td>WCAG 2.1 AA</td><td>Government documents must be accessible</td></tr>
+      <tr><td>Analytics</td><td>Plausible or GoatCounter</td><td>Privacy-first — this is research infrastructure</td></tr>
+      <tr><td>Multilingual</td><td>English v1, add ES/FR in v2</td><td>Caribbean and African diaspora languages</td></tr>
+      <tr><td>Rate Limiting</td><td>None on downloads</td><td>Remove friction — the goal is access</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ANTI-PATTERNS
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="anti-pattern">
+    <h3>Anti-Patterns — What We Don't Do</h3>
+    <ul>
+      <li><strong>Don't build a database.</strong> Static files are enough. Databases need maintenance.</li>
+      <li><strong>Don't embed PDFs in the page.</strong> Link to them. Let users download.</li>
+      <li><strong>Don't add comments/discussion.</strong> This is an archive, not social media.</li>
+      <li><strong>Don't make it a SPA.</strong> Server-render everything. Speed &gt; interactivity.</li>
+      <li><strong>Don't gate any documents.</strong> No login, no email, no paywall.</li>
+      <li><strong>Don't editorialize.</strong> Present documents neutrally. Let the content speak.</li>
+      <li><strong>Don't ignore non-English sources.</strong> Flag them for Phase 2 translation.</li>
+    </ul>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ACCOUNTABILITY
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section" id="accountability">
+  <div class="section-header">
+    <h2><span class="gold">Accountability</span> Framework</h2>
+  </div>
+
+  <div class="account-grid">
+    <div class="account-card">
+      <h4>Research Lead</h4>
+      <p>Verify every PDF link is accessible. Flag dead links. Recon unknown unknowns.</p>
+    </div>
+    <div class="account-card">
+      <h4>Engineering Lead</h4>
+      <p>Build the site. Ensure uptime. Backup strategy. Performance budget.</p>
+    </div>
+    <div class="account-card">
+      <h4>Content Lead</h4>
+      <p>Write descriptions. Ensure neutral tone. Tag accurately. No editorializing.</p>
+    </div>
+    <div class="account-card">
+      <h4>QA Lead</h4>
+      <p>Test on 5 browsers. Verify all downloads work. Check accessibility.</p>
+    </div>
+    <div class="account-card">
+      <h4>Israel / Hermie</h4>
+      <p>Final review. Strategic alignment. Launch approval.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BUDGET
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section" id="budget">
+  <div class="section-header">
+    <h2><span class="gold">Budget</span> Estimate</h2>
+  </div>
+
+  <table class="budget-table">
+    <tr><td>Domain (1 year)</td><td>$12</td></tr>
+    <tr><td>Hosting</td><td>$0</td></tr>
+    <tr><td>SSL</td><td>$0</td></tr>
+    <tr><td>Design</td><td>$0</td></tr>
+    <tr><td>Labor</td><td>Team time only</td></tr>
+    <tr><td>TOTAL</td><td>$12/year</td></tr>
+  </table>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SUCCESS CRITERIA
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-header">
+    <h2>Success <span class="gold">Criteria</span></h2>
+  </div>
+
+  <ul class="checklist">
+    <li>All 47 verified documents accessible within 2 clicks from homepage</li>
+    <li>Site loads in &lt;2 seconds on 3G</li>
+    <li>Works on Safari, Chrome, Firefox, mobile</li>
+    <li>Search returns relevant results</li>
+    <li>All download links return 200</li>
+    <li>At least 3 "unknown unknowns" resolved during execution</li>
+    <li>Code is open source on GitHub</li>
+    <li>Can be maintained by anyone with basic Git knowledge</li>
+  </ul>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     NEXT STEPS
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="callout">
+    <h3>Next Steps</h3>
+    <ol style="text-align: left; max-width: 400px; margin: var(--space-4) auto 0; color: var(--color-text-secondary); font-size: 0.9rem;">
+      <li style="margin-bottom: var(--space-2);"><strong>Domain decision</strong> — register the domain</li>
+      <li style="margin-bottom: var(--space-2);"><strong>Team assignment</strong> — who owns which phase</li>
+      <li style="margin-bottom: var(--space-2);"><strong>Recon verification</strong> — team independently verifies the 47 findings</li>
+      <li style="margin-bottom: var(--space-2);"><strong>Kickoff</strong> — start Phase 1</li>
+    </ol>
+  </div>
+</section>
+
+<footer class="footer">
+  <p><strong>Reparations Digital Archive — Implementation Plan v1</strong></p>
+  <p>This plan is a <strong>suggestion for inspiration</strong>. The executing team should conduct their own independent recon, verify all findings, and adapt this plan to their capabilities and findings. Accountability is everyone's responsibility.</p>
+  <p style="margin-top: var(--space-4);">E5 Enclave Incorporated — 501(c)(3) Nonprofit <span class="ein">EIN 99-3822441</span></p>
+  <p>Open Source · Version Controlled · Zero Cost · Sovereign</p>
+</footer>
+
+</body>
+</html>

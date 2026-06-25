@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reparations & Banking — Digital Archive | E5 Enclave</title>
+<style>
+:root {
+  --color-bg-primary: #111118;
+  --color-bg-secondary: #1a1a20;
+  --color-bg-elevated: #22222a;
+  --color-gold: #c9a84c;
+  --color-gold-light: #d4b96a;
+  --color-gold-dark: #a88a3c;
+  --color-gold-muted: rgba(201,168,76,0.15);
+  --color-text-primary: #f0f0f2;
+  --color-text-secondary: #a0a0a8;
+  --color-text-muted: #6a6a72;
+  --color-text-gold: #c9a84c;
+  --color-border-subtle: rgba(255,255,255,0.05);
+  --color-border-default: rgba(255,255,255,0.08);
+  --color-border-elevated: rgba(255,255,255,0.12);
+  --color-border-gold: rgba(201,168,76,0.3);
+  --color-red: #f44336;
+  --color-red-muted: rgba(244,67,54,0.15);
+  --font-display: 'Georgia', 'Times New Roman', serif;
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'SF Mono', 'Berkeley Mono', ui-monospace, monospace;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px;
+  --space-4: 16px; --space-5: 24px; --space-6: 32px;
+  --space-7: 48px; --space-8: 64px; --space-9: 96px;
+  --bento-gap: 16px;
+  --bento-radius: 16px;
+  --bento-padding: 24px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(17,17,24,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-border-subtle);
+  padding: var(--space-4) var(--space-6);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand { font-family: var(--font-display); font-size: 1.2rem; color: var(--color-gold); letter-spacing: 0.02em; text-decoration: none; }
+.nav-links { display: flex; gap: var(--space-5); flex-wrap: wrap; }
+.nav-links a { color: var(--color-text-secondary); text-decoration: none; font-size: 0.8rem; transition: color 0.2s; }
+.nav-links a:hover { color: var(--color-gold); }
+@media (max-width: 768px) { .nav-links { display: none; } }
+
+.hero {
+  min-height: 80vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: var(--space-9) var(--space-6);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,168,76,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 80% 60%, rgba(244,67,54,0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-content { position: relative; z-index: 1; text-align: center; max-width: 900px; }
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.8rem);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-5);
+}
+.hero h1 .gold { color: var(--color-gold); }
+.hero h1 .red { color: var(--color-red); }
+.hero-sub { font-size: 1rem; color: var(--color-text-secondary); max-width: 650px; margin: 0 auto var(--space-6); }
+.hero-stats { display: flex; gap: var(--space-7); justify-content: center; flex-wrap: wrap; }
+.stat-item { text-align: center; }
+.stat-number { font-family: var(--font-display); font-size: 2rem; color: var(--color-gold); line-height: 1; }
+.stat-label { font-size: 0.7rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: var(--space-2); }
+
+.trust-rail {
+  background: var(--color-bg-secondary);
+  border-top: 1px solid var(--color-border-subtle);
+  border-bottom: 1px solid var(--color-border-subtle);
+  padding: var(--space-4) var(--space-6);
+  display: flex; justify-content: center; gap: var(--space-6); flex-wrap: wrap;
+  font-size: 0.75rem; color: var(--color-text-muted);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.trust-rail span { color: var(--color-text-secondary); }
+
+.section { padding: var(--space-9) var(--space-6); max-width: 1200px; margin: 0 auto; }
+.section-header { text-align: center; margin-bottom: var(--space-8); }
+.section-header h2 { font-family: var(--font-display); font-size: clamp(1.5rem, 3.5vw, 2.4rem); font-weight: 400; margin-bottom: var(--space-3); }
+.section-header p { color: var(--color-text-secondary); max-width: 650px; margin: 0 auto; }
+
+/* Thread Section */
+.thread-meta {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--bento-radius);
+  padding: var(--bento-padding);
+  margin-bottom: var(--space-7);
+  display: flex; gap: var(--space-6); flex-wrap: wrap; align-items: center;
+  justify-content: center;
+}
+.thread-meta-item { text-align: center; }
+.thread-meta-item .label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-muted); }
+.thread-meta-item .value { font-family: var(--font-display); font-size: 1.1rem; color: var(--color-gold); }
+
+/* Key Stat Cards */
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--bento-gap); margin-bottom: var(--space-8); }
+.stat-card {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--bento-radius);
+  padding: var(--bento-padding);
+  text-align: center;
+}
+.stat-card .stat-value { font-family: var(--font-display); font-size: 2rem; color: var(--color-gold); line-height: 1; }
+.stat-card .stat-label { font-size: 0.75rem; color: var(--color-text-secondary); margin-top: var(--space-2); }
+.stat-card .stat-source { font-size: 0.65rem; color: var(--color-text-muted); margin-top: var(--space-1); }
+
+/* Timeline */
+.timeline { position: relative; max-width: 800px; margin: var(--space-7) auto; padding-left: var(--space-7); }
+.timeline::before {
+  content: '';
+  position: absolute; left: 12px; top: 0; bottom: 0; width: 2px;
+  background: linear-gradient(180deg, var(--color-gold), var(--color-border-default));
+}
+.timeline-item { position: relative; margin-bottom: var(--space-6); }
+.timeline-item::before {
+  content: '';
+  position: absolute; left: calc(-1 * var(--space-7) + 6px); top: 6px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--color-gold);
+  border: 3px solid var(--color-bg-primary);
+}
+.timeline-item .tl-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
+}
+.timeline-item .tl-content { font-size: 0.85rem; color: var(--color-text-secondary); line-height: 1.6; }
+.timeline-item .tl-links { margin-top: var(--space-3); display: flex; gap: var(--space-2); flex-wrap: wrap; }
+
+/* Bento Grid */
+.bento-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--bento-gap); }
+.bento-card {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--bento-radius);
+  padding: var(--bento-padding);
+  transition: all 0.3s ease;
+  position: relative; overflow: hidden;
+}
+.bento-card:hover { border-color: var(--color-border-gold); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(201,168,76,0.08); }
+.bento-card.featured { border-color: var(--color-border-gold); }
+.bento-card .card-type { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-gold); margin-bottom: var(--space-2); }
+.bento-card .card-title { font-family: var(--font-display); font-size: 1.05rem; line-height: 1.3; margin-bottom: var(--space-2); color: var(--color-text-primary); }
+.bento-card .card-source { font-size: 0.75rem; color: var(--color-text-secondary); margin-bottom: var(--space-2); }
+.bento-card .card-meta { display: flex; gap: var(--space-2); flex-wrap: wrap; font-size: 0.65rem; color: var(--color-text-muted); margin-bottom: var(--space-3); }
+.bento-card .card-meta span { background: var(--color-bg-elevated); padding: 2px 8px; border-radius: 4px; }
+.bento-card .card-desc { font-size: 0.8rem; color: var(--color-text-secondary); line-height: 1.5; margin-bottom: var(--space-3); }
+
+.btn {
+  display: inline-flex; align-items: center; gap: var(--space-1);
+  padding: var(--space-2) var(--space-4);
+  border-radius: 6px; font-size: 0.75rem; text-decoration: none;
+  transition: all 0.2s; font-family: var(--font-body); cursor: pointer; border: none;
+}
+.btn-primary { background: var(--color-gold); color: var(--color-bg-primary); font-weight: 600; }
+.btn-primary:hover { background: var(--color-gold-light); }
+.btn-secondary { background: transparent; color: var(--color-gold); border: 1px solid var(--color-border-gold); }
+.btn-secondary:hover { background: var(--color-gold-muted); }
+
+/* Argument List */
+.argument-list { max-width: 800px; margin: var(--space-6) auto; }
+.argument-item {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-default);
+  border-radius: 12px;
+  padding: var(--space-4) var(--space-5);
+  margin-bottom: var(--space-3);
+  display: flex; gap: var(--space-4); align-items: flex-start;
+}
+.argument-num {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: var(--color-gold);
+  line-height: 1;
+  min-width: 40px;
+  flex-shrink: 0;
+}
+.argument-content .arg-title { font-weight: 600; color: var(--color-text-primary); margin-bottom: var(--space-1); }
+.argument-content .arg-body { font-size: 0.85rem; color: var(--color-text-secondary); line-height: 1.5; }
+
+/* Financial Lineage */
+.lineage-diagram {
+  max-width: 900px; margin: var(--space-7) auto;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--bento-radius);
+  padding: var(--bento-padding);
+}
+.lineage-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.lineage-row:last-child { border-bottom: none; }
+.lineage-entity { font-family: var(--font-display); font-size: 1rem; color: var(--color-text-primary); }
+.lineage-note { font-size: 0.7rem; color: var(--color-text-muted); margin-top: var(--space-1); }
+.lineage-arrow { color: var(--color-gold); font-size: 1.2rem; }
+
+.divider { height: 1px; background: linear-gradient(90deg, transparent, var(--color-border-default), transparent); max-width: 1200px; margin: 0 auto; }
+
+.callout {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-gold);
+  border-radius: var(--bento-radius);
+  padding: var(--bento-padding);
+  margin: var(--space-7) auto;
+  max-width: 800px;
+}
+.callout h3 { font-family: var(--font-display); color: var(--color-gold); font-weight: 400; font-size: 1.3rem; margin-bottom: var(--space-3); }
+.callout p { color: var(--color-text-secondary); }
+
+.footer {
+  background: var(--color-bg-secondary);
+  border-top: 1px solid var(--color-border-subtle);
+  padding: var(--space-7) var(--space-6);
+  text-align: center;
+  margin-top: var(--space-9);
+}
+.footer p { color: var(--color-text-muted); font-size: 0.8rem; margin-bottom: var(--space-2); }
+.footer .ein { font-family: var(--font-mono); color: var(--color-gold); }
+
+@media (max-width: 768px) {
+  .hero-stats { gap: var(--space-5); }
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .bento-grid { grid-template-columns: 1fr; }
+  .argument-item { flex-direction: column; gap: var(--space-2); }
+  .lineage-row { flex-direction: column; text-align: center; gap: var(--space-1); }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="#" class="nav-brand">⬡ REPARATIONS & BANKING</a>
+  <div class="nav-links">
+    <a href="#thread">The Thread</a>
+    <a href="#economics">Economics</a>
+    <a href="#lineage">Financial Lineage</a>
+    <a href="#arguments">Arguments</a>
+    <a href="#documents">Documents</a>
+    <a href="#analysis">Analysis</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <h1>Reparations &<br><span class="gold">Banking</span> <span class="red">Wall</span></h1>
+    <p class="hero-sub">A forensic archive of @anarcho_app's thread connecting modern financial institutions to slavery-era capital. Primary sources, economic data, corporate lineage, and the Top 10 arguments that undermine the state.</p>
+    <div class="hero-stats">
+      <div class="stat-item"><div class="stat-value">15+</div><div class="stat-label">Primary Sources</div></div>
+      <div class="stat-item"><div class="stat-value">$16T</div><div class="stat-label">Citi's Cost of Racism</div></div>
+      <div class="stat-item"><div class="stat-value">5</div><div class="stat-label">Corporate Generations</div></div>
+      <div class="stat-item"><div class="stat-value">10</div><div class="stat-label">State-Undermining Args</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="trust-rail">
+  <span>Primary Sources</span>
+  <span>Archive.org</span>
+  <span>Economic Data</span>
+  <span>Corporate Lineage</span>
+  <span>Anarchist Analysis</span>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     THREAD OVERVIEW
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section" id="thread">
+  <div class="section-header">
+    <h2>The <span class="gold">Thread</span></h2>
+    <p>@anarcho_app's ongoing exploration of how financial institutions, monetary policy, and racial oppression intertwine. Rooted in primary sources from Archive.org.</p>
+  </div>
+
+  <div class="thread-meta">
+    <div class="thread-meta-item"><div class="label">Account</div><div class="value">@anarcho_app</div></div>
+    <div class="thread-meta-item"><div class="label">Root Post</div><div class="value">"Economics of Racism"</div></div>
+    <div class="thread-meta-item"><div class="label">Duration</div><div class="value">Sept 2024 – Present</div></div>
+    <div class="thread-meta-item"><div class="label">Format</div><div class="value">Video + Archive Scans</div></div>
+    <div class="thread-meta-item"><div class="label">Perspective</div><div class="value">Anarchist / Anti-State</div></div>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="tl-title">Root: "The Economics of Racism" (44+ min video)</div>
+      <div class="tl-content">Covers Tulsa Massacre / Black Wall Street, "40 acres and a mule" broken promises, Reconstruction failures, a century of racist policy, and the broader economics of race in America.</div>
+      <div class="tl-links">
+        <a href="https://x.com/anarcho_app/status/1955415590392537523" target="_blank" rel="noopener" class="btn btn-secondary">Original Post →</a>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-title">Follow-up: Primary Source Scans</div>
+      <div class="tl-content">Series of posts sharing digitized books from Archive.org — clearing house manuals, banking histories, slavery economics texts, monetary policy documents. Minimal commentary, letting documents speak.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-title">Clearing House Book (Specific Post)</div>
+      <div class="tl-content">Links to a digitized historical book on banking clearing houses — the private systems banks used to settle debts before central banking. Core to the thread's thesis about private alternatives to state finance.</div>
+      <div class="tl-links">
+        <a href="https://archive.org/details/clearinghousene00wallgoog/mode/2up" target="_blank" rel="noopener" class="btn btn-primary">📖 Read on Archive.org</a>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-title">Economic Data Posts</div>
+      <div class="tl-content">Citigroup's $16T estimate (2000-2020) and WEF's $51T since 1990 figures. Thread argues: "It cost more to not pay reparations than to pay it."</div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-title">Corporate Lineage Thread</div>
+      <div class="tl-content">BlackRock → Blackstone → Lehman Brothers → slavery. "Corps via the 14th are people. & all 3 involved still alive amongst others." DTCC tokenization links.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-title">Top 10 Arguments</div>
+      <div class="tl-content">Infographic-style list showing that common objections to reparations logically undermine the state itself. Each anti-reparation argument maps to an anti-state argument.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ECONOMICS OF RACISM
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section" id="economics">
+  <div class="section-header">
+    <h2>Economics <span class="gold">of Racism</span></h2>
+    <p>The financial case for reparations — data cited in the thread.</p>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-value">$16T</div>
+      <div class="stat-label">Lost GDP (2000-2020)</div>
+      <div class="stat-source">Citigroup Report, 2020</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">$51T</div>
+      <div class="stat-label">Lost GDP (1990-2024)</div>
+      <div class="stat-source">World Economic Forum</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">$25T+</div>
+      <div class="stat-label">Welfare Transfers Since 1960s</div>
+      <div class="stat-source">War on Poverty spending</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">8-10x</div>
+      <div class="stat-label">White:Black Median Wealth</div>
+      <div class="stat-source">Federal Reserve Data</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <h3>The Thread's Thesis</h3>
+    <p>"No. We don't owe their debt & it cost more to not pay reparations than to pay it. At this point." — @anarcho_app argues that the $16T+ in lost economic output exceeds any reparations bill, making inaction the more expensive choice.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     FINANCIAL LINEAGE
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section" id="lineage">
+  <div class="section-header">
+    <h2>Corporate <span class="gold">Lineage</span></h2>
+    <p>Five generations of institutions, from cotton brokerage to the world's largest asset manager.</p>
+  </div>
+
+  <div class="lineage-diagram">
+    <div class="lineage-row">
+      <div>
+        <div class="lineage-entity">Lehman Brothers (1850)</div>
+        <div class="lineage-note">Cotton brokerage, Montgomery Alabama. Capital built on slave-produced cotton.</div>
+      </div>
+      <div class="lineage-arrow">→</div>
+      <div>
+        <div class="lineage-entity">Blackstone (1985)</div>
+        <div class="lineage-note">Founded by Lehman alumni Schwarzman & Peterson. $400K seed + Lehman networks.</div>
+      </div>
+    </div>
+    <div class="lineage-row">
+      <div>
+        <div class="lineage-entity">BlackRock (1988/1994)</div>
+        <div class="lineage-note">Started inside Blackstone, spun out 1994. Now ~$10-12T AUM.</div>
+      </div>
+      <div class="lineage-arrow">→</div>
+      <div>
+        <div class="lineage-entity">Aladdin Platform</div>
+        <div class="lineage-note">Risk management system overseeing trillions in assets globally.</div>
+      </div>
+    </div>
+    <div class="lineage-row">
+      <div>
+        <div class="lineage-entity">The Big Three</div>
+        <div class="lineage-note">BlackRock + Vanguard + State Street. Control stakes in nearly every major corporation.</div>
+      </div>
+      <div class="lineage-arrow">→</div>
+      <div>
+        <div class="lineage-entity">DTCC / Tokenization</div>
+        <div class="lineage-note">Digital Depository Receipts, blockchain settlement. "Still alive amongst others."</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout" style="border-color: rgba(244,67,54,0.3); background: var(--color-red-muted);">
+    <h3 style="color: var(--color-red);">Thread Claim</h3>
+    <p>"Blackrock got its seed money from Blackstone who got its seed money from Lehman Brothers who got their seed money from slavery…corps via the 14th are people. & all 3 involved still alive amongst others…"</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TOP 10 ARGUMENTS
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section" id="arguments">
+  <div class="section-header">
+    <h2>Top 10 <span class="gold">Arguments</span></h2>
+    <p>Each common objection to reparations, mapped to its logical conclusion for state legitimacy.</p>
+  </div>
+
+  <div class="argument-list">
+    <div class="argument-item">
+      <div class="argument-num">1</div>
+      <div class="argument-content">
+        <div class="arg-title">"You didn't own slaves"</div>
+        <div class="arg-body">= "You didn't sign the social contract." Both reject historical obligation.</div>
+      </div>
+    </div>
+    <div class="argument-item">
+      <div class="argument-num">2</div>
+      <div class="argument-content">
+        <div class="arg-title">Mixing/immigration makes blame impossible</div>
+        <div class="arg-body">= Destroys the state's "historical title" to land, courts, or authority.</div>
+      </div>
+    </div>
+    <div class="argument-item">
+      <div class="argument-num">3</div>
+      <div class="argument-content">
+        <div class="arg-title">Forcing innocents to pay via taxes is theft</div>
+        <div class="arg-body">= That's literally how government is funded.</div>
+      </div>
+    </div>
+    <div class="argument-item">
+      <div class="argument-num">4</div>
+      <div class="argument-content">
+        <div class="arg-title">Punishes non-slaveholding families/immigrants</div>
+        <div class="arg-body">= Same as every tax, regulation, or draft.</div>
+      </div>
+    </div>
+    <div class="argument-item">
+      <div class="argument-num">5</div>
+      <div class="argument-content">
+        <div class="arg-title">Letting the state "pay" expands government power</div>
+        <div class="arg-body">= Government IS the criminal (enforced slavery & Jim Crow). Abolish it instead of rewarding it.</div>
+      </div>
+    </div>
+    <div class="argument-item">
+      <div class="argument-num">6</div>
+      <div class="argument-content">
+        <div class="arg-title">All original parties are dead</div>
+        <div class="arg-body">= Same logic would kill perpetual public debt or "we the people."</div>
+      </div>
+    </div>
+    <div class="argument-item">
+      <div class="argument-num">7</div>
+      <div class="argument-content">
+        <div class="arg-title">Ignores offsets (Black Americans richer than if ancestors stayed in Africa)</div>
+        <div class="arg-body">= Applies to any "state benefits" claim.</div>
+      </div>
+    </div>
+    <div class="argument-item">
+      <div class="argument-num">8</div>
+      <div class="argument-content">
+        <div class="arg-title">Treating skin color as debt violates legal equality</div>
+        <div class="arg-body">= Government's entire "protected class"/welfare system collapses.</div>
+      </div>
+    </div>
+    <div class="argument-item">
+      <div class="argument-num">9</div>
+      <div class="argument-content">
+        <div class="arg-title">Endless fraud and bureaucratic costs</div>
+        <div class="arg-body">= Why every government "justice" program fails.</div>
+      </div>
+    </div>
+    <div class="argument-item">
+      <div class="argument-num">10</div>
+      <div class="argument-content">
+        <div class="arg-title">Keeps people begging the state instead of building autonomy</div>
+        <div class="arg-body">= Real fix: abolish the state's monopoly on violence. Voluntary society handles property claims.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PRIMARY SOURCES & DOCUMENTS
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section" id="documents">
+  <div class="section-header">
+    <h2>Primary <span class="gold">Sources</span></h2>
+    <p>Archive.org documents shared in the thread. All free to read and download.</p>
+  </div>
+
+  <div class="bento-grid">
+    <div class="bento-card featured">
+      <div class="card-type">Banking History</div>
+      <div class="card-title">Clearing House Book (Historical)</div>
+      <div class="card-source">Archive.org — Digitized 19th/early 20th century text</div>
+      <div class="card-meta"><span>Primary Source</span><span>Banking</span><span>Clearing House</span></div>
+      <div class="card-desc">Core document in the thread. Details the private clearing house systems that settled interbank claims before central banking. Central to the thesis of private alternatives to state finance.</div>
+      <div class="card-actions">
+        <a href="https://archive.org/details/clearinghousene00wallgoog/mode/2up" target="_blank" rel="noopener" class="btn btn-primary">📖 Read on Archive.org</a>
+      </div>
+    </div>
+
+    <div class="bento-card">
+      <div class="card-type">Primary Source</div>
+      <div class="card-title">Jews and Negro Slavery in the Old South, 1789–1865</div>
+      <div class="card-source">Archive.org</div>
+      <div class="card-meta"><span>Historical</span><span>Slavery Economics</span></div>
+      <div class="card-desc">Detailed historical account of Jewish involvement in the Southern slave economy. Shared in debates about historical responsibility.</div>
+      <div class="card-actions">
+        <a href="https://archive.org/details/JewsAndNegroSlaveryInTheOldSouth1789-1865/mode/1up" target="_blank" rel="noopener" class="btn btn-primary">📖 Read on Archive.org</a>
+      </div>
+    </div>
+
+    <div class="bento-card">
+      <div class="card-type">Foundational Text</div>
+      <div class="card-title">Agrarian Justice — Thomas Paine (1797)</div>
+      <div class="card-source">Archive.org</div>
+      <div class="card-meta"><span>Political Economy</span><span>Land Reform</span></div>
+      <div class="card-desc">Paine's argument that the Earth was originally common property and private ownership creates poverty that society must remedy. Thread uses this to argue poverty is artificial.</div>
+      <div class="card-actions">
+        <a href="https://archive.org/details/agrarianjusticeo00pain" target="_blank" rel="noopener" class="btn btn-primary">📖 Read on Archive.org</a>
+      </div>
+    </div>
+
+    <div class="bento-card">
+      <div class="card-type">Historical Text</div>
+      <div class="card-title">History of America</div>
+      <div class="card-source">Archive.org</div>
+      <div class="card-meta"><span>American History</span><span>19th Century</span></div>
+      <div class="card-desc">Historical text shared as part of the thread's broader context on American economic development and slavery's role.</div>
+      <div class="card-actions">
+        <a href="https://archive.org/details/cu31924014029205/mode/2up" target="_blank" rel="noopener" class="btn btn-secondary">📖 View on Archive.org</a>
+      </div>
+    </div>
+
+    <div class="bento-card">
+      <div class="card-type">Historical Biography</div>
+      <div class="card-title">Jehudi Ashmun Biography</div>
+      <div class="card-source">Archive.org</div>
+      <div class="card-meta"><span>Biography</span><span>Abolition</span></div>
+      <div class="card-desc">Page scans from a biography of Jehudi Ashmun, early American colonization and abolition figure.</div>
+      <div class="card-actions">
+        <span class="btn btn-secondary" style="cursor: default;">📖 In Thread Context</span>
+      </div>
+    </div>
+
+    <div class="bento-card">
+      <div class="card-type">Academic Reference</div>
+      <div class="card-title">Race — John R. Baker (1970s)</div>
+      <div class="card-source">Archive.org (referenced in related discussions)</div>
+      <div class="card-meta"><span>Race Science</span><span>Academic</span></div>
+      <div class="card-desc">Referenced in related Anarchonomicon circles. Academic summary of race research with Nobel laureate endorsements. Noted as "nearly disappeared" but available on archive.org.</div>
+      <div class="card-actions">
+        <a href="https://archive.org/search?query=Race+John+R+Baker" target="_blank" rel="noopener" class="btn btn-secondary">🔍 Search Archive.org</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SUPPORTING DOCUMENTS & LINKS
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-header">
+    <h2>Supporting <span class="gold">Links</span></h2>
+    <p>External references cited in the thread — Treasury, DTCC, reports.</p>
+  </div>
+
+  <div class="bento-grid">
+    <div class="bento-card">
+      <div class="card-type">Government</div>
+      <div class="card-title">U.S. Treasury Press Release</div>
+      <div class="card-source">home.treasury.gov</div>
+      <div class="card-meta"><span>Tokenization</span><span>Digital Assets</span></div>
+      <div class="card-desc">Treasury press release referenced in the thread regarding tokenized assets and digital settlement infrastructure.</div>
+      <div class="card-actions">
+        <a href="https://home.treasury.gov/news/press-releases/jy0956" target="_blank" rel="noopener" class="btn btn-secondary">Visit Treasury.gov →</a>
+      </div>
+    </div>
+
+    <div class="bento-card">
+      <div class="card-type">Financial Infrastructure</div>
+      <div class="card-title">DTCC Digital Depository Receipts</div>
+      <div class="card-source">dtcc.com</div>
+      <div class="card-meta"><span>Settlement</span><span>Tokenization</span></div>
+      <div class="card-desc">DTCC whitepapers on DDP pilot, UST1, and clearance/settlement processes. Thread links these to corporate continuity.</div>
+      <div class="card-actions">
+        <a href="https://www.dtcc.com/settlement-and-asset-services/processing/digital-depository-receipts" target="_blank" rel="noopener" class="btn btn-secondary">Visit DTCC →</a>
+      </div>
+    </div>
+
+    <div class="bento-card">
+      <div class="card-type">Economic Report</div>
+      <div class="card-title">Citigroup: The Cost of Racism</div>
+      <div class="card-source">Citigroup / Citi GPS Report, 2020</div>
+      <div class="card-meta"><span>$16 Trillion</span><span>GDP Loss</span></div>
+      <div class="card-desc">Citi's 2020 analysis estimating $16T in lost GDP from 2000-2020 due to racial gaps in wages, housing, lending, and business ownership.</div>
+      <div class="card-actions">
+        <a href="https://www.citigroup.com/citi/news/2020/the-cost-of-racism" target="_blank" rel="noopener" class="btn btn-secondary">Citi Report →</a>
+      </div>
+    </div>
+
+    <div class="bento-card">
+      <div class="card-type">Economic Report</div>
+      <div class="card-title">WEF: Racial Equity Economic Case</div>
+      <div class="card-source">World Economic Forum</div>
+      <div class="card-meta"><span>$51 Trillion</span><span>Since 1990</span></div>
+      <div class="card-desc">WEF report estimating racial and ethnic inequality has cost the U.S. economy $51T since 1990. Cited in thread as additional evidence.</div>
+      <div class="card-actions">
+        <a href="https://www.weforum.org/publications" target="_blank" rel="noopener" class="btn btn-secondary">WEF Publications →</a>
+      </div>
+    </div>
+
+    <div class="bento-card">
+      <div class="card-type">Historical Context</div>
+      <div class="card-title">The Color of Money — Mehrsa Baradaran</div>
+      <div class="card-source">Academic / Related Discussion</div>
+      <div class="card-meta"><span>Freedman's Bank</span><span>Black Wealth</span></div>
+      <div class="card-desc">Referenced in related discussions about the Freedman's Savings Bank failure and how it erased early accumulated Black wealth.</div>
+      <div class="card-actions">
+        <a href="https://archive.org/search?query=Color+of+Money+Baradaran" target="_blank" rel="noopener" class="btn btn-secondary">🔍 Search Archive.org</a>
+      </div>
+    </div>
+
+    <div class="bento-card">
+      <div class="card-type">Historical Context</div>
+      <div class="card-title">When Affirmative Action Was White</div>
+      <div class="card-source">Ira Katznelson / Related Discussion</div>
+      <div class="card-meta"><span>New Deal</span><span>GI Bill</span></div>
+      <div class="card-desc">Referenced in discussions about 20th-century racial inequality in policy and wealth-building. How New Deal and GI Bill disproportionately benefited white Americans.</div>
+      <div class="card-actions">
+        <a href="https://archive.org/search?query=When+Affirmative+Action+Was+White" target="_blank" rel="noopener" class="btn btn-secondary">🔍 Search Archive.org</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ANALYSIS
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section" id="analysis">
+  <div class="section-header">
+    <h2>Thread <span class="gold">Analysis</span></h2>
+    <p>What the thread gets right, what it overstates, and what remains contested.</p>
+  </div>
+
+  <div class="bento-grid">
+    <div class="bento-card">
+      <div class="card-type">Verified ✅</div>
+      <div class="card-title">Lehman Brothers → Slavery</div>
+      <div class="card-source">Documented Economic History</div>
+      <div class="card-desc">Lehman Brothers was founded in 1850 in Montgomery, Alabama as a cotton brokerage. Cotton was America's leading export, produced overwhelmingly by enslaved labor. This is documented fact.</div>
+    </div>
+
+    <div class="bento-card">
+      <div class="card-type">Verified ✅</div>
+      <div class="card-title">BlackRock → Blackstone → Lehman</div>
+      <div class="card-source">Corporate Records</div>
+      <div class="card-desc">BlackRock was incubated inside Blackstone (1988) and spun out in 1994. Blackstone was co-founded by Lehman Brothers alumni Schwarzman and Peterson in 1985. Personnel and capital pipeline is real.</div>
+    </div>
+
+    <div class="bento-card">
+      <div class="card-type">Verified ✅</div>
+      <div class="card-title">Citigroup's $16T Estimate</div>
+      <div class="card-source">Citi GPS Report, 2020</div>
+      <div class="card-desc">Citi published a 2020 analysis estimating $16T in lost GDP from 2000-2020 due to racial gaps. Methodology is debated but the report exists and is cited.</div>
+    </div>
+
+    <div class="bento-card">
+      <div class="card-type">Overstated ⚠️</div>
+      <div class="card-title">"Seed Money From Slavery"</div>
+      <div class="card-source">Multi-Generational Tracing</div>
+      <div class="card-desc">The direct lineage is stylized. Across 150+ years of bankruptcies, spin-offs, mergers, and public markets, calling it "seed money from slavery" is rhetorically powerful but overstates direct causation. New capital formation at each stage dilutes the original tie.</div>
+    </div>
+
+    <div class="bento-card">
+      <div class="card-type">Overstated ⚠️</div>
+      <div class="card-title">"Corporations Are People"</div>
+      <div class="card-source">14th Amendment Doctrine</div>
+      <div class="card-desc">Corporate personhood is real legal doctrine (Santa Clara County v. Southern Pacific, 1886). But extreme versions (birth certificates traded as bonds, DTCC as global control) are pseudolegal and uniformly rejected by courts.</div>
+    </div>
+
+    <div class="bento-card">
+      <div class="card-type">Contested ❓</div>
+      <div class="card-title">Reparations = State Undermining</div>
+      <div class="card-source">Anarchist Logic</div>
+      <div class="card-desc">The thread's core argument — that anti-reparation logic undermines the state — is philosophically consistent within anarchist frameworks but doesn't engage with practical counterarguments about democratic consent, progressive taxation, or existing precedents (Japanese internment, Rosewood).</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════════════════════════ -->
+<footer class="footer">
+  <p><strong>Reparations & Banking Digital Archive</strong> — Primary source collection from @anarcho_app's thread.</p>
+  <p>Built to the <a href="https://github.com/IAMGODIAM/sovereign-design-intelligence" style="color: var(--color-gold); text-decoration: none;">Sovereign Design Intelligence System</a></p>
+  <p style="margin-top: var(--space-4);">E5 Enclave Incorporated — 501(c)(3) Nonprofit <span class="ein">EIN 99-3822441</span></p>
+  <p>Open Source · Version Controlled · Zero Cost · Sovereign</p>
+  <p style="margin-top: var(--space-4); font-size: 0.7rem;">Archived 2026-06-25 · 15+ primary sources · 6 supporting documents · 10 arguments catalogued</p>
+</footer>
+
+</body>
+</html>
