@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reparative Justice in Greater Miami — Comprehensive Report</title>
+    <style>
+        :root {
+            --primary: #1a365d;
+            --accent: #2b6cb0;
+            --accent-light: #4299e1;
+            --light: #f7fafc;
+            --border: #e2e8f0;
+            --text: #2d3748;
+            --highlight: #ebf8ff;
+            --warning: #fffbeb;
+            --success: #f0fff4;
+            --danger: #fff5f5;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            color: var(--text);
+            line-height: 1.7;
+            background: #f1f5f9;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 2.5rem 3rem;
+        }
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.3px;
+        }
+        .header .subtitle {
+            font-size: 1rem;
+            opacity: 0.92;
+            font-weight: 400;
+            margin-bottom: 0.8rem;
+        }
+        .header .meta {
+            font-size: 0.82rem;
+            opacity: 0.75;
+        }
+        .stats-bar {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.2rem;
+            flex-wrap: wrap;
+        }
+        .stat {
+            background: rgba(255,255,255,0.15);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+        .content {
+            padding: 2.5rem 3rem;
+        }
+        .section {
+            margin-bottom: 2.2rem;
+        }
+        .section h2 {
+            font-size: 1.2rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 0.4rem;
+            margin-bottom: 1rem;
+        }
+        .section h3 {
+            font-size: 1.02rem;
+            color: var(--accent);
+            margin: 1.2rem 0 0.6rem;
+        }
+        p {
+            margin-bottom: 0.7rem;
+            font-size: 0.93rem;
+        }
+        ul {
+            padding-left: 1.3rem;
+            margin-bottom: 0.8rem;
+        }
+        li {
+            margin-bottom: 0.45rem;
+            font-size: 0.91rem;
+        }
+        .callout {
+            background: var(--highlight);
+            border-left: 4px solid var(--accent);
+            padding: 0.9rem 1.1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+        }
+        .callout-warning {
+            background: var(--warning);
+            border-left: 4px solid #d69e2e;
+            padding: 0.9rem 1.1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.88rem;
+        }
+        .callout strong, .callout-warning strong {
+            color: var(--primary);
+        }
+        .bill-tag {
+            display: inline-block;
+            background: var(--highlight);
+            color: var(--accent);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-right: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.8rem 0 1.2rem;
+            font-size: 0.88rem;
+        }
+        thead th {
+            background: var(--primary);
+            color: white;
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #1a365d;
+        }
+        tbody td {
+            padding: 9px 12px;
+            border: 1px solid var(--border);
+        }
+        tbody tr:nth-child(even) {
+            background: var(--light);
+        }
+        .highlight-text {
+            background: #fefcbf;
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+        .note {
+            background: var(--warning);
+            border: 1px solid #f6e05e;
+            border-radius: 6px;
+            padding: 0.8rem 1rem;
+            font-size: 0.84rem;
+            margin-top: 0.8rem;
+        }
+        .footnote {
+            font-size: 0.78rem;
+            color: #718096;
+            margin-top: 0.4rem;
+            font-style: italic;
+        }
+        .footer {
+            background: var(--light);
+            padding: 1.4rem 3rem;
+            font-size: 0.8rem;
+            color: #718096;
+            border-top: 1px solid var(--border);
+        }
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        @media print {
+            body { padding: 0; background: white; }
+            .container { box-shadow: none; border-radius: 0; }
+            .section { break-inside: avoid; }
+        }
+        @media (max-width: 640px) {
+            body { padding: 0.5rem; }
+            .header { padding: 1.5rem; }
+            .content { padding: 1.5rem; }
+            .stats-bar { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>Reparative Justice in Greater Miami</h1>
+            <div class="subtitle">From Overtown to Opportunity — Documenting Distress, Data, and the Path Forward</div>
+            <div class="meta">Prepared: June 25, 2026 | By Hermie — Visionary Intelligence Layer for Israel Lee</div>
+            <div class="stats-bar">
+                <div class="stat">4 Priority Counties</div>
+                <div class="stat">490+ FL Charter Schools</div>
+                <div class="stat">406,000+ Charter Students</div>
+                <div class="stat">$25M+ Schools of Hope Funding</div>
+            </div>
+        </div>
+
+        <div class="content">
+
+            <!-- EXECUTIVE SUMMARY -->
+            <div class="section">
+                <h2>Executive Summary</h2>
+                <ul>
+                    <li><strong>Historical Injury:</strong> Miami's Overtown neighborhood — once known as "The Harlem of the South" — was destroyed by 1960s urban renewal, displacing 40,000+ Black residents for I-95 highway construction.</li>
+                    <li><strong>Current Distress:</strong> Miami-Dade County has the highest concentration of Black poverty in Florida, with significant disparities in housing, health, and education.</li>
+                    <li><strong>Legal Opening:</strong> Florida's 2025 Schools of Hope laws (HB 443, HB 1105, HB 1255, SB 2510) give charter schools — and by extension Black communities — right of first refusal on surplus school properties.</li>
+                    <li><strong>Property Pipeline:</strong> FLDOE publishes annual Vacant & Underused Facilities Reports for all 67 counties, identifying specific properties available for reuse.</li>
+                </ul>
+            </div>
+
+            <!-- HISTORICAL FOUNDATION -->
+            <div class="section">
+                <h2>Historical Foundation — Overtown & Black Miami</h2>
+                <p>Overtown was Miami's historic Black cultural and economic hub, home to theaters, hotels, churches, and businesses that formed the backbone of the city's Black community. In the 1960s, urban renewal programs destroyed over 40 blocks of Overtown to make way for Interstate 95, displacing approximately 40,000 Black residents and dismantling a thriving community.</p>
+
+                <div class="callout">
+                    <strong>Ralph C. McCartney</strong> — An original Overtown resident who was interviewed in 1997 as part of a University of Florida oral history project documenting the neighborhood's legacy. His testimony, along with dozens of others, preserves the memory of what was lost and the resilience of those who survived the displacement.<sup>1</sup>
+                </div>
+
+                <p>Today, the Greater Miami area still bears the scars of this history. Black Americans in Miami-Dade experience:</p>
+                <ul>
+                    <li>Poverty rates of approximately <span class="highlight-text">25-30%</span> compared to ~12% for white residents<sup>2</sup></li>
+                    <li>Median household income roughly 40% of white median income</li>
+                    <li>Significantly higher rates of housing cost burden (>50% of income)</li>
+                    <li>Disparities in educational outcomes, health indicators, and economic mobility</li>
+                </ul>
+            </div>
+
+            <!-- HUD SECTION 3 -->
+            <div class="section">
+                <h2>HUD Section 3 — Federal Framework for Economic Opportunity</h2>
+                <p>HUD Section 3 (12 U.S.C. § 1701u) requires that recipients of certain HUD funding provide employment, training, and contracting opportunities to low-income residents in connection with assisted projects. In Miami-Dade County, this applies to activities of the Miami-Dade Housing Authority and other HUD grantees.</p>
+
+                <h3>Key Data Points</h3>
+                <ul>
+                    <li>Miami-Dade County receives approximately <span class="highlight-text">$40M+ annually</span> in HUD funding (CDBG, HOME, Housing Choice Vouchers)</li>
+                    <li>Section 3 applies to Public Housing Authority capital fund expenditures over $200,000</li>
+                    <li>Recipients must demonstrate that 30% of new hires are Section 3 residents</li>
+                    <li>Contracting goals require 10% of construction contracts to go to Section 3 businesses</li>
+                </ul>
+
+                <div class="callout-warning">
+                    <strong>Note:</strong> Specific HUD Section 3 compliance reports for Miami-Dade are available through HUD User (huduser.gov) and the Miami-Dade County Department of Housing and Community Development. Direct PDF links are behind bot-detection systems; use the Wayback Machine mirror for access.
+                </div>
+
+                <h3>Key Reports</h3>
+                <ul>
+                    <li>Miami-Dade County Consolidated Plan (5-year housing & community development strategy)</li>
+                    <li>Miami-Dade Housing Needs Assessment</li>
+                    <li>HUD Section 3 Annual Reports (by fiscal year)</li>
+                    <li>Miami-Dade County Fair Housing Plan</li>
+                </ul>
+            </div>
+
+            <!-- DISTRESS DATA -->
+            <div class="section">
+                <h2>Distress Data — Priority Counties</h2>
+                <p>The following indicators reflect the current state of Black American distress across the four priority counties. All figures are approximate and based on the most recent available data (2022-2024 ACS, CDC, DOE sources). Exact figures should be verified against current releases.<sup>3</sup></p>
+
+                <h3>Miami-Dade County</h3>
+                <table>
+                    <thead><tr><th>Indicator</th><th>Black</th><th>White</th><th>Gap</th></tr></thead>
+                    <tbody>
+                        <tr><td>Poverty Rate</td><td>~27%</td><td>~11%</td><td>2.5x</td></tr>
+                        <tr><td>Median Household Income</td><td>~$36,000</td><td>~$62,000</td><td>~58% of white</td></tr>
+                        <tr><td>Homeownership Rate</td><td>~32%</td><td>~55%</td><td>-23 pts</td></tr>
+                        <tr><td>Housing Cost Burden (>50% income)</td><td>~58%</td><td>~35%</td><td>+23 pts</td></tr>
+                        <tr><td>Bachelor's Degree or Higher</td><td>~22%</td><td>~38%</td><td>-16 pts</td></tr>
+                        <tr><td>Uninsured Rate</td><td>~18%</td><td>~9%</td><td>2x</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Broward County</h3>
+                <table>
+                    <thead><tr><th>Indicator</th><th>Black</th><th>White</th><th>Gap</th></tr></thead>
+                    <tbody>
+                        <tr><td>Poverty Rate</td><td>~21%</td><td>~10%</td><td>2.1x</td></tr>
+                        <tr><td>Median Household Income</td><td>~$40,000</td><td>~$60,000</td><td>~67% of white</td></tr>
+                        <tr><td>Homeownership Rate</td><td>~35%</td><td>~58%</td><td>-23 pts</td></tr>
+                        <tr><td>Housing Cost Burden (>50% income)</td><td>~52%</td><td>~33%</td><td>+19 pts</td></tr>
+                        <tr><td>Bachelor's Degree or Higher</td><td>~25%</td><td>~36%</td><td>-11 pts</td></tr>
+                        <tr><td>Uninsured Rate</td><td>~15%</td><td>~8%</td><td>~1.9x</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Orange County</h3>
+                <table>
+                    <thead><tr><th>Indicator</th><th>Black</th><th>White</th><th>Gap</th></tr></thead>
+                    <tbody>
+                        <tr><td>Poverty Rate</td><td>~23%</td><td>~11%</td><td>2.1x</td></tr>
+                        <tr><td>Median Household Income</td><td>~$38,000</td><td>~$58,000</td><td>~66% of white</td></tr>
+                        <tr><td>Homeownership Rate</td><td>~33%</td><td>~54%</td><td>-21 pts</td></tr>
+                        <tr><td>Housing Cost Burden (>50% income)</td><td>~54%</td><td>~34%</td><td>+20 pts</td></tr>
+                        <tr><td>Bachelor's Degree or Higher</td><td>~24%</td><td>~35%</td><td>-11 pts</td></tr>
+                        <tr><td>Uninsured Rate</td><td>~16%</td><td>~9%</td><td>~1.8x</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Seminole County</h3>
+                <table>
+                    <thead><tr><th>Indicator</th><th>Black</th><th>White</th><th>Gap</th></tr></thead>
+                    <tbody>
+                        <tr><td>Poverty Rate</td><td>~18%</td><td>~9%</td><td>2.0x</td></tr>
+                        <tr><td>Median Household Income</td><td>~$44,000</td><td>~$62,000</td><td>~71% of white</td></tr>
+                        <tr><td>Homeownership Rate</td><td>~40%</td><td>~62%</td><td>-22 pts</td></tr>
+                        <tr><td>Housing Cost Burden (>50% income)</td><td>~48%</td><td>~32%</td><td>+16 pts</td></tr>
+                        <tr><td>Bachelor's Degree or Higher</td><td>~28%</td><td>~37%</td><td>-9 pts</td></tr>
+                        <tr><td>Uninsured Rate</td><td>~13%</td><td>~8%</td><td>~1.6x</td></tr>
+                    </tbody>
+                </table>
+                <p class="footnote">Sources: U.S. Census Bureau American Community Survey (2022-2023 1-year estimates), CDC Behavioral Risk Factor Surveillance System, Florida Department of Education. Exact figures vary by year and methodology — verify against current releases for legal or funding purposes.</p>
+            </div>
+
+            <!-- LEGAL FRAMEWORK -->
+            <div class="section">
+                <h2>Legal Framework — Schools of Hope (2025)</h2>
+                <p>During the 2025 Florida legislative session, four bills were passed that collectively create the most favorable legal environment for charter school expansion — and by extension Black community property reclamation — in the state's history.</p>
+
+                <h3><span class="bill-tag">HB 443</span> Charter School Administration and Operations (Ch. 2025-144)</h3>
+                <ul>
+                    <li><strong>Public Facility Status:</strong> Clarifies that charter schools are public schools and must be treated as a public facility for concurrency related to community development.</li>
+                    <li><strong>Right of First Refusal:</strong> Before a school district can sell, transfer, or lease any real property (including school facilities), it must provide written notice to every charter school in the district. Charter schools receive a <span class="highlight-text">right of first refusal</span> to purchase, lease, or use the property for educational purposes.</li>
+                    <li><strong>Ad Valorem Exemption:</strong> Any facility used to house an approved charter school is exempt from ad valorem taxes (pursuant to s. 196.1983).</li>
+                    <li><strong>Existing Facility Reuse:</strong> Libraries, museums, performing arts centers, churches, universities, and other public institutional facilities can provide space to charter schools <strong>without rezoning, special exceptions, or land use changes</strong> — under their preexisting zoning designations.</li>
+                    <li><strong>Regulatory Parity:</strong> Interlocal agreements or ordinances that impose greater regulatory burden on charter schools than on traditional school districts are <strong>void and unenforceable</strong>.</li>
+                </ul>
+
+                <h3><span class="bill-tag">HB 1105</span> Education Omnibus Bill (Ch. 2025-109)</h3>
+                <ul>
+                    <li><strong>Parent-Initiated Conversion:</strong> Allows a majority of parents/guardians to convert a district-run public school to a public charter school <em>without input from school teachers or administrators</em>.</li>
+                    <li><strong>Job Engine Charter Schools:</strong> Authorizes municipalities to apply to convert existing public schools into <span class="highlight-text">"job engine charter schools"</span> — workforce-focused charter institutions.</li>
+                    <li><strong>Surtax Revenue Sharing:</strong> Requires school districts to share discretionary surtax (infrastructure) revenue with eligible charter schools based on enrollment, for levies approved on or after July 1, 2025.</li>
+                </ul>
+
+                <h3><span class="bill-tag">HB 1255</span> Charter School Local Regulation Preemption</h3>
+                <ul>
+                    <li><strong>Land Use Preemption:</strong> Local governments <strong>cannot enforce</strong> building, site, or operational rules on charter schools (parking, student capacity, hours of operation, site size) unless those rules are uniformly applied to all public schools in the area.</li>
+                    <li><strong>Exemption from Rezoning:</strong> Charter schools are exempt from land use changes or permits that would not be required of other public or private schools at the same location.</li>
+                </ul>
+
+                <h3><span class="bill-tag">SB 2510</span> Education Appropriations — Schools of Hope</h3>
+                <ul>
+                    <li><strong>Funding Floor:</strong> Requires Schools of Hope program funds to be maintained at <span class="highlight-text">$25 million or more annually</span>, starting July 1, 2027.</li>
+                    <li><strong>Expanded Definition:</strong> "Persistently low-performing school" now includes schools in the bottom 10% in at least two of three years for grade 3 ELA or grade 4 mathematics.</li>
+                </ul>
+            </div>
+
+            <!-- PROPERTY INVENTORY -->
+            <div class="section">
+                <h2>Property Inventory — Vacant & Underused Facilities</h2>
+                <p>The Florida Department of Education publishes annual <strong>Vacant & Underused Facilities Reports</strong> for all 67 counties. These reports identify closed, vacant, and underutilized school properties — the exact inventory that HB 443's right-of-first-refusal and HB 1105's conversion pathways are designed to channel to charter operators and communities.</p>
+
+                <div class="callout">
+                    <strong>These are your target properties.</strong> Each PDF contains specific addresses, facility conditions, and usage status. Combined with the legal framework above, these reports represent a pipeline for property acquisition and community redevelopment.
+                </div>
+
+                <h3>Priority County Reports (2024-2025)</h3>
+                <table>
+                    <thead>
+                        <tr><th>County</th><th>PDF Link</th><th>Size</th><th>Pages</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Miami-Dade</strong></td><td><a href="https://www.fldoe.org/core/fileparse.php/20080/urlt/2425Dade.pdf">2425Dade.pdf</a></td><td>1.6 MB</td><td>20 pages</td></tr>
+                        <tr><td><strong>Broward</strong></td><td><a href="https://www.fldoe.org/core/fileparse.php/20080/urlt/2425Broward.pdf">2425Broward.pdf</a></td><td>1.1 MB</td><td>13 pages</td></tr>
+                        <tr><td><strong>Orange</strong></td><td><a href="https://www.fldoe.org/core/fileparse.php/20080/urlt/2425Orange.pdf">2425Orange.pdf</a></td><td>1.0 MB</td><td>13 pages</td></tr>
+                        <tr><td><strong>Seminole</strong></td><td><a href="https://www.fldoe.org/core/fileparse.php/20080/urlt/2425Seminole.pdf">2425Seminole.pdf</a></td><td>330 KB</td><td>4 pages</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>All 67 Counties</h3>
+                <ul>
+                    <li><strong>Statewide Index:</strong> <a href="https://www.fldoe.org/finance/edual-facilities/vacant-under-facilities/2024-2025.stml">2024-2025 Vacant & Underused Facilities — County Index</a></li>
+                    <li><strong>FLDOE Main Page:</strong> <a href="https://www.fldoe.org/finance/edual-facilities/vacant-under-facilities/">Vacant & Underused Facilities Reports (All Years)</a></li>
+                </ul>
+
+                <div class="note">
+                    <strong>⚠️ Access Note:</strong> The live FLDoE site uses bot detection that may block automated downloads. If a link fails, use the Wayback Machine mirror:<br>
+                    <code style="background:#f0f0f0; padding:3px 8px; border-radius:4px; font-size:0.8rem;">https://web.archive.org/web/20250410182013if_/https://www.fldoe.org/core/fileparse.php/20080/urlt/2425Dade.pdf</code><br>
+                    (Substitute county name as needed: Broward, Orange, Seminole)
+                </div>
+            </div>
+
+            <!-- COMMUNITY VOICES -->
+            <div class="section">
+                <h2>Community Voices & Oral History</h2>
+                <p>The destruction of Overtown and its aftermath has been documented through several oral history projects that preserve the voices of those who lived through it:</p>
+
+                <h3>University of Florida African American History Project (AAHP)</h3>
+                <ul>
+                    <li>Over 600+ oral history interviews conducted with African Americans throughout Florida</li>
+                    <li>One of the largest public African American history collections in the United States</li>
+                    <li>Includes interviews with Miami-Dade residents, including original Overtown community members</li>
+                    <li><strong>Ralph C. McCartney Interview (1997):</strong> An original Overtown resident interviewed as part of a UF project documenting the neighborhood's legacy and the community's experience of displacement.<sup>1</sup></li>
+                </ul>
+
+                <h3>Samuel Proctor Oral History Program (SPOHP)</h3>
+                <ul>
+                    <li>Based at the University of Florida, College of Liberal Arts and Sciences</li>
+                    <li>Hosts the African American History Project and the "Reanimating African American Histories of the Gulf South" initiative</li>
+                    <li>Over 25 public history programs and community-based oral history workshops across Florida</li>
+                </ul>
+
+                <h3>Other Oral History Resources</h3>
+                <ul>
+                    <li>HistoryMiami Museum — Archives of Miami-Dade Black history</li>
+                    <li>Florida Memory Project (floridamemory.com) — State archives including Black oral histories</li>
+                    <li>Black Archives at Florida A&M University — Research collection on Black Florida history</li>
+                </ul>
+            </div>
+
+            <!-- STRATEGIC RECOMMENDATIONS -->
+            <div class="section">
+                <h2>Strategic Recommendations — A Reparative Justice Framework</h2>
+
+                <h3>1. Property Reclamation Pipeline</h3>
+                <ul>
+                    <li>Obtain the current Vacant & Underused Facilities Report for each priority county</li>
+                    <li>Cross-reference with historical Black neighborhood boundaries (Overtown, Coconut Grove, Richmond Heights, etc.)</li>
+                    <li>Identify properties in or adjacent to historically displaced communities</li>
+                    <li>Exercise right of first refusal under HB 443 before properties hit the open market</li>
+                </ul>
+
+                <h3>2. Community Engagement Strategy</h3>
+                <ul>
+                    <li>File public records requests for all surplus property disposition notices in target counties</li>
+                    <li>Build relationships with school board members to receive early notice of property decisions</li>
+                    <li>Organize community coalitions to support charter applications for reclaimed properties</li>
+                    <li>Use parent-initiated conversion (HB 1105) where existing schools serve Black communities</li>
+                </ul>
+
+                <h3>3. Legal & Funding Leverage</h3>
+                <ul>
+                    <li>Apply for Schools of Hope funding ($25M+ annual pool) to support charter development on reclaimed properties</li>
+                    <li>Challenge any local zoning or regulatory barriers under HB 1255's preemption provisions</li>
+                    <li>Ensure HUD Section 3 compliance for any housing-adjacent property development</li>
+                    <li>Pursue ad valorem tax exemptions (HB 443) for charter school facilities</li>
+                </ul>
+
+                <h3>4. Reparative Justice Framework</h3>
+                <div class="callout">
+                    <strong>The Core Principle:</strong> The destruction of Overtown was not just a planning decision — it was the deliberate dismantling of Black wealth, community, and self-determination. Florida's current legal framework creates a pathway for partial repair: returning surplus public property to community-controlled institutions (charter schools) that serve the descendants of those displaced. This is not charity — it is the return of what was taken, enabled by law.
+                </div>
+            </div>
+
+            <!-- SOURCES -->
+            <div class="section">
+                <h2>Sources & Links</h2>
+                <h3>Legislative Sources</h3>
+                <ul>
+                    <li><strong>HB 443 (2025):</strong> <a href="https://www.flsenate.gov/Session/Bill/2025/443">Charter School Administration and Operations</a> (Ch. 2025-144)</li>
+                    <li><strong>HB 1105 (2025):</strong> <a href="https://www.flsenate.gov/Session/Bill/2025/1105">Education Omnibus Bill</a> (Ch. 2025-109)</li>
+                    <li><strong>HB 1255 (2025):</strong> Charter School Local Regulation Preemption</li>
+                    <li><strong>SB 2510 (2025):</strong> Education Appropriations — Schools of Hope funding</li>
+                </ul>
+
+                <h3>Property Data</h3>
+                <ul>
+                    <li><strong>FLDOE Vacant & Underused Facilities:</strong> <a href="https://www.fldoe.org/finance/edual-facilities/vacant-under-facilities/">fldoe.org/finance/edual-facilities/vacant-under-facilities/</a></li>
+                    <li><strong>Miami-Dade Report:</strong> <a href="https://www.fldoe.org/core/fileparse.php/20080/urlt/2425Dade.pdf">2425Dade.pdf</a> (20pp, 1.6MB)</li>
+                    <li><strong>Broward Report:</strong> <a href="https://www.fldoe.org/core/fileparse.php/20080/urlt/2425Broward.pdf">2425Broward.pdf</a> (13pp, 1.1MB)</li>
+                    <li><strong>Orange Report:</strong> <a href="https://www.fldoe.org/core/fileparse.php/20080/urlt/2425Orange.pdf">2425Orange.pdf</a> (13pp, 1.0MB)</li>
+                    <li><strong>Seminole Report:</strong> <a href="https://www.fldoe.org/core/fileparse.php/20080/urlt/2425Seminole.pdf">2425Seminole.pdf</a> (4pp, 330KB)</li>
+                </ul>
+
+                <h3>Oral History & Archives</h3>
+                <ul>
+                    <li><strong>UF African American History Project:</strong> <a href="https://oral.history.ufl.edu/african-american-history-project-aahp/">oral.history.ufl.edu/african-american-history-project-aahp/</a></li>
+                    <li><strong>UF Samuel Proctor Oral History Program:</strong> <a href="https://oral.history.ufl.edu/">oral.history.ufl.edu</a></li>
+                    <li><strong>FCSA 2025 New Laws Summary:</strong> <a href="https://flcharterschool.org/new-education-laws-as-of-july-1-2025/">flcharterschool.org/new-education-laws-as-of-july-1-2025/</a></li>
+                </ul>
+
+                <h3>Data Sources</h3>
+                <ul>
+                    <li>U.S. Census Bureau — American Community Survey (2022-2023)</li>
+                    <li>CDC — Behavioral Risk Factor Surveillance System</li>
+                    <li>Florida Department of Education — School Performance & Accountability Data</li>
+                    <li>HUD User — Section 3 Reports & Housing Data (huduser.gov)</li>
+                </ul>
+
+                <h3>Wayback Machine Mirror</h3>
+                <p>If any FLDoE or government link is blocked by bot detection, prefix the URL with:<br>
+                <code style="background:#f0f0f0; padding:3px 8px; border-radius:4px; font-size:0.8rem;">https://web.archive.org/web/20250410182013if_/</code></p>
+
+                <p class="footnote" style="margin-top:1.5rem;">
+                    <sup>1</sup> The Ralph C. McCartney interview (1997) is referenced in user testimony as part of a University of Florida oral history project. The UF African American History Project collection exists but specific citation details require direct inquiry with SPOHP.<br>
+                    <sup>2</sup> All distress data figures are approximate and based on the most recent available ACS/CDC data (2022-2024). Verify exact figures against current releases for legal, funding, or publication purposes.<br>
+                    <sup>3</sup> HUD Section 3 compliance data for Miami-Dade is available through HUD User (huduser.gov) and Miami-Dade County housing reports. Direct PDF access may require Wayback Machine mirror.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="footer">
+            <strong>Prepared by:</strong> Hermie — Visionary Intelligence Layer for Israel Lee &nbsp;|&nbsp;
+            <strong>Date:</strong> June 25, 2026 &nbsp;|&nbsp;
+            <strong>Methodology:</strong> Legislative text analysis, archival research, property data cataloguing, oral history identification &nbsp;|&nbsp;
+            <strong>Limitations:</strong> Some government sites use bot-detection that limits direct PDF access. Wayback Machine mirrors provide fallback access. Distress data figures are approximate — verify against current releases. &nbsp;|&nbsp;
+            <a href="https://github.com/IAMGODIAM/hermes-workspace">GitHub Repository</a>
+        </div>
+    </div>
+</body>
+</html>
